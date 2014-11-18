@@ -18,9 +18,13 @@ class asciiMovie:
         for i in range(0,self.row):
             self.objList0[-1].append([])
             self.objList1[-1].append([])
+            ##self.objList1[a][row0][col0]['a',row,col,vr,vc,ar,ac]
             for j in range(0,self.col):
                 self.objList0[-1][-1].append(' ')
                 self.objList1[-1][-1].append(' ')
+                self.objList1[-1][-1].append(i); self.objList1[-1][-1].append(j)
+                self.objList1[-1][-1].append(0); self.objList1[-1][-1].append(0)
+                self.objList1[-1][-1].append(0); self.objList1[-1][-1].append(0)
 
     def addData(self,fname,iObj):
         fp=open(fname,'r')
@@ -29,10 +33,10 @@ class asciiMovie:
             for j in range(0,self.col):
                 if(j<len(line)):
                     self.objList0[iObj][i][j]=line[j]
-                    self.objList1[iObj][i][j]=line[j]
+                    self.objList1[iObj][i][j][0]=line[j]
                 else:
                     self.objList0[iObj][i][j]=' '
-                    self.objList1[iObj][i][j]=' '
+                    self.objList1[iObj][i][j][0]=' '
         fp.close()
 
     def clearObj(self,iObj,flag):
@@ -41,10 +45,14 @@ class asciiMovie:
                 if(flag=='0'):
                     self.objList0[iObj][i][j]=' '
                 if(flag=='1'):
-                    self.objList1[iObj][i][j]=' '
+                    self.objList1[iObj][i][j][0]=' '
+                    for k in range(1,7):
+                        self.objList1[iObj][i][j][k]=0
                 if(flag=='a'):
                     self.objList0[iObj][i][j]=' '
-                    self.objList1[iObj][i][j]=' '
+                    self.objList1[iObj][i][j][0]=' '
+                    for k in range(1,7):
+                        self.objList1[iObj][i][j][k]=0
 
     def clearBuf(self):
         for i in range(0,self.row):
@@ -58,13 +66,14 @@ class asciiMovie:
 
     def addToBuf(self,iObj,flag):
         "flag=over/add"
+        if(flag=='over'):
+            self.clearBuf()
         for i in range(0,self.row):
             for j in range(0,self.col):
-                if(flag=='add'):
-                    if(self.objList1[iObj][i][j]!=' '):
-                         self.buf[i][j]=self.objList1[iObj][i][j]
-                if(flag=='over'):
-                    self.buf[i][j]=self.objList1[iObj][i][j]
+                nrow=self.obfList1[iObj][i][j][1]; ncol=self.obfList1[iObj][i][j][2]
+                if(self.objList1[iObj][i][j][0]!=' '):
+                    self.buf[nrow][ncol]=self.objList1[iObj][i][j][0]
+
 
     def moveObj(self,nrow,ncol,iObj):
         self.clearObj(iObj,'1')
