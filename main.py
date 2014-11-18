@@ -74,14 +74,10 @@ class asciiMovie:
                 if(self.objList1[iObj][i][j][0]!=' '):
                     self.buf[nrow][ncol]=self.objList1[iObj][i][j][0]
 
-
-    def moveObj(self,nrow,ncol,iObj):
-        self.clearObj(iObj,'1')
+    def addVA(self,iObj,vr,vc,ar,ac):
         for i in range(0,self.row):
             for j in range(0,self.col):
-                i2=i+nrow; j2=j+ncol
-                if(i2>=0 and i2<self.row and j2>=0 and j2<self.col):
-                    self.objList1[iObj][i2][j2]=self.objList0[iObj][i][j]
+                   
 
     def scrollDown(self,sN,sT):
         "sN: scroll sN rows every step, sT: interval time"
