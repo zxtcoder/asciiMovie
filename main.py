@@ -7,6 +7,10 @@ class asciiMovie:
         self.row=row; self.col=col
         self.objList0=[]; self.objList1=[]
         self.buf=[]
+        for i in range(0,self.row):
+            self.buf.append([])
+            for j in range(0,self.col):
+                self.buf[-1].append(' ')
 
     def newObj(self):
 	self.objList0.append([])
@@ -43,34 +47,32 @@ class asciiMovie:
                     self.objList1[iObj][i][j]=' '
 
     def clearBuf(self):
-        self.buf=[]
         for i in range(0,self.row):
-            self.buf.append(' ')
+            for j in range(0,self.col):
+                self.buf[i][j]=' '
         
     def show(self):
         os.system('clear')
         for line in self.buf:
-            print line
+            print ''.join(line)
 
     def addToBuf(self,iObj,flag):
         "flag=over/add"
         for i in range(0,self.row):
             for j in range(0,self.col):
                 if(flag=='add'):
-                    if(self.objList[iObj][i][j]!=' '):
+                    if(self.objList1[iObj][i][j]!=' '):
                          self.buf[i][j]=self.objList1[iObj][i][j]
                 if(flag=='over'):
                     self.buf[i][j]=self.objList1[iObj][i][j]
 
     def moveObj(self,nrow,ncol,iObj):
-        self.clearObj(iObj,1)
+        self.clearObj(iObj,'1')
         for i in range(0,self.row):
             for j in range(0,self.col):
                 i2=i+nrow; j2=j+ncol
-                print i,j,i2,j2,self.row,self.col
                 if(i2>=0 and i2<self.row and j2>=0 and j2<self.col):
-                    pass
-                    #self.objList1[iObj][i2][j2]=self.objList0[i][j]
+                    self.objList1[iObj][i2][j2]=self.objList0[iObj][i][j]
 
     def scrollDown(self,sN,sT):
         "sN: scroll sN rows every step, sT: interval time"
