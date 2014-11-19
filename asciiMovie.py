@@ -21,8 +21,7 @@ class asciiMovie:
         fp=open(fname,'r')
         content=fp.readlines()
         for i in range(beginL,endL,stepL):
-            if(content[i][-1]=='\n'):
-                line=content[i][:-1]
+            line=content[i].strip('\n')
             for j in range(0,self.col):
                 if(j>=self.col or j>=len(line) or line[j]==' '):
                     continue
@@ -75,14 +74,14 @@ class asciiMovie:
 
     def runCommon(self,iobj):
         for item in self.obj[iobj]:
-            item[1]=int(item[1] + item[3])
-            item[2]=int(item[2] + item[4])
-            item[3]=int(item[3] + item[5])
-            item[4]=int(item[4] + item[6])
+            item[1]=item[1] + item[3]
+            item[2]=item[2] + item[4]
+            item[3]=item[3] + item[5]
+            item[4]=item[4] + item[6]
 
     def addToBuf(self,iobj):
         for item in self.obj[iobj]:
-            ch=item[0]; nrow=item[1]; ncol=item[2]
+            ch=item[0]; nrow=int(item[1]); ncol=int(item[2])
             if(nrow>=0 and nrow<self.row and ncol>=0 and ncol<self.col):
                 self.buf[nrow][ncol]=ch
 
@@ -109,38 +108,43 @@ class asciiMovie:
             dd=math.sqrt(dr*dr+dc*dc+0.0)
             if(dd==0):
                 continue
-            item[3]=int(dr/dd*vMax); item[4]=int(dc/dd*vMax*1.5);
+            item[3]=(dr/dd*vMax); item[4]=(dc/dd*vMax*1.5);
+
+    def addVecRand(self,iobj,v):
+        for item in self.obj[iobj]:
+            vr=(random.random()-0.5)*v
+            vc=(random.random()-0.5)*v
+            item[3]=vr; item[4]=vc
+ 
   
     def snow(self,iobj,vr,vc):
         for item in self.obj[iobj]:
             item[3]=vr; item[4]=vc*(random.random()-0.5)
 
-    def firework(self,iobj,nr,nc,v,a):
-        dAng=math.pi/10;i=0
-        for item in self.obj[iobj]:
-            item[3]=v*math.cos(i*dAng)*1.5; item[4]=v*math.sin(i*dAng)
+    def fountain(self,iobj,nr,nc,v,a):
+        dAng=math.pi/7;i=0
+        for i in range(0,50):
+            self.addPoint('cur',iobj,'*',nr,nc,0,0,0,0)
+        i=1
+        dAng=-(random.random()+1)
+        for item in self.obj[iobj][-21:]:
+            item[3]=v*math.sin(i*dAng); item[4]=v*math.cos(i*dAng)*1.5
             item[5]=a; item[6]=0
-            i=i+1
+
+    def mixText(self,iobj,v):
+        num=len(self.obj[iobj])
+        for i in range(0,num):
+            nrC=self.obj[iobj][i][1]; ncC=self.obj[iobj][i][2]
+            nrE=self.objEnd[iobj][i][1]; ncE=self.objEnd[iobj][i][2]
+            dr=nrE-nrC; dc=ncE-ncC
+            dd=math.sqrt(dr*dr+dc*dc)
+            if(dd<=1):
+                vr=0;vc=0; 
+                self.obj[iobj][i][1]=nrE; self.obj[iobj][i][2]=ncE
+                self.obj[iobj][i][3]=vr; self.obj[iobj][i][4]=vc
+            else:
+                vrand=v*(random.random()-0.5)
+                vr=dr/dd*v+vrand; vc=dc/dd*v+vrand
+                self.obj[iobj][i][3]=vr; self.obj[iobj][i][4]=vc
 
 
-a=asciiMovie(40,100)
-a.addEmptyObj()
-a.loadFile('a.txt',0,40,1,0,'cur')
-a.addEmptyObj()
-a.loadFile('b.txt',0,40,1,1,'cur')
-a.addEmptyObj()
-for i in range(0,1000):
-    a.addPoint('cur',2,'+',20,50,0,0,0,0)
-a.firework(2,20,50,2,0)
-#a.addVecCir(0,20,50,2,0,0)
-a.move(0,-40,0)
-for i in range(0,40):
-    a.clearBuf()
-    a.snow(0,1,10)
-    a.runCommon(0)
-    a.runCommon(2)
-    a.addToBuf(1)
-    a.addToBuf(0)
-    a.addToBuf(2)
-    a.showBuf()
-    time.sleep(0.5)
