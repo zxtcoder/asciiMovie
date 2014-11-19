@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-import os,sys,math,time,copy
+import os,sys,math,time,copy,random
 
 class asciiMovie:
     def __init__(self,row,col):
@@ -24,7 +24,7 @@ class asciiMovie:
             if(content[i][-1]=='\n'):
                 line=content[i][:-1]
             for j in range(0,self.col):
-                if(j>=self.col or line[j]==' '):
+                if(j>=self.col or j>=len(line) or line[j]==' '):
                     continue
                 nrow=(i-beginL)/stepL; ncol=j
                 if(flag=='cur'):
@@ -51,6 +51,15 @@ class asciiMovie:
         for item in self.obj[iobj]:
             item[3]=vr; item[4]=vc; item[5]=ar; item[6]=ac
 
+    def addVecCir(self,iobj,nr,nc,vMax,vMin,a):
+        for item in self.obj[iobj]:
+            irow=item[1];icol=item[2]
+            dr=irow-nr; dc=icol-nc
+            dd=math.sqrt(dr*dr+dc*dc+0.0)
+            if(dd==0):
+                continue
+            item[3]=int(dr/dd*vMax); item[4]=int(dc/dd*vMax*1.5);
+            
     def move(self,iobj,drow,dcol):
         for item in self.obj[iobj]:
             item[1]=item[1]+drow;
@@ -59,10 +68,10 @@ class asciiMovie:
 
     def runCommon(self,iobj):
         for item in self.obj[iobj]:
-            item[1]=item[1] + item[3]
-            item[2]=item[2] + item[4]
-            item[3]=item[3] + item[5]
-            item[4]=item[4] + item[6]
+            item[1]=int(item[1] + item[3])
+            item[2]=int(item[2] + item[4])
+            item[3]=int(item[3] + item[5])
+            item[4]=int(item[4] + item[6])
 
     def addToBuf(self,iobj):
         for item in self.obj[iobj]:
@@ -80,15 +89,28 @@ class asciiMovie:
         for i in range(0,self.row):
             line=''.join(self.buf[i])
             print line
+###########   Effect      #######################
+
+    def snow(self,iobj,vr,vc):
+        for item in self.obj[iobj]:
+            item[3]=vr; item[4]=vc*(random.random()-0.5)
+
+
+
 
 
 a=asciiMovie(40,100)
 a.addEmptyObj()
 a.loadFile('a.txt',0,40,1,0,'cur')
-a.addVec1(0,1,0,0,0)
+a.addEmptyObj()
+a.loadFile('b.txt',0,40,1,1,'cur')
+#a.addVecCir(0,20,50,2,0,0)
+a.move(0,-40,0)
 for i in range(0,40):
     a.clearBuf()
+    a.snow(0,1,10)
     a.runCommon(0)
+    a.addToBuf(1)
     a.addToBuf(0)
     a.showBuf()
     time.sleep(0.5)
