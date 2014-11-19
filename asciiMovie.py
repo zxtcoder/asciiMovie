@@ -22,8 +22,9 @@ class asciiMovie:
         content=fp.readlines()
         for i in range(beginL,endL,stepL):
             line=content[i].strip('\n')
-            for j in range(0,self.col):
-                if(j>=self.col or j>=len(line) or line[j]==' '):
+            numtmp=len(line)
+            for j in range(0,numtmp):
+                if(line[j]==' '):
                     continue
                 nrow=(i-beginL)/stepL; ncol=j
                 if(flag=='cur'):
@@ -115,8 +116,23 @@ class asciiMovie:
             vr=(random.random()-0.5)*v
             vc=(random.random()-0.5)*v
             item[3]=vr; item[4]=vc
- 
-  
+
+    def scroll(self,iobj,vr,vc,flag):
+        num=len(self.obj[iobj])
+        if(flag=='init'):
+            for item in self.obj[iobj]:
+                item[3]=vr; item[4]=vc
+        if(flag=='end'):
+            for i in range(0,num):
+                nrC=self.obj[iobj][i][1]; ncC=self.obj[iobj][i][2]
+                nrE=self.objEnd[iobj][i][1]; ncE=self.objEnd[iobj][i][2]
+                dr=nrE-nrC; dc=ncE-ncC
+                dd=math.sqrt(dr*dr+dc*dc)
+                if(dd<=1):
+                    vr=0;vc=0; 
+                    self.obj[iobj][i][1]=nrE; self.obj[iobj][i][2]=ncE
+                    self.obj[iobj][i][3]=vr; self.obj[iobj][i][4]=vc
+
     def snow(self,iobj,vr,vc):
         for item in self.obj[iobj]:
             item[3]=vr; item[4]=vc*(random.random()-0.5)
@@ -130,6 +146,31 @@ class asciiMovie:
         for item in self.obj[iobj][-21:]:
             item[3]=v*math.sin(i*dAng); item[4]=v*math.cos(i*dAng)*1.5
             item[5]=a; item[6]=0
+
+    def lineShow(self,iobj,num):
+        pnum=len(self.obj[iobj])
+        bnum=len(self.objBegin[iobj])
+        for i in range(pnum,pnum+num):
+            if(i>=bnum):
+                break
+            self.obj[iobj].append(self.objBegin[iobj][i])
+
+    def shadeHide(self,iobj,num):
+        for i in range(0,num):
+            pnum=len(self.obj[iobj])
+            if(pnum<=0):
+                break
+            selIndex=int(random.random()*pnum)
+            self.obj[iobj].pop(selIndex)
+
+    def shadeShow(self,iobj,num):
+        for i in range(0,num):
+            pnum=len(self.objBegin[iobj])
+            if(pnum<=0):
+                break
+            selIndex=int(random.random()*pnum)
+            self.obj[iobj].append(self.objBegin[iobj][selIndex])
+            self.objBegin[iobj].pop(selIndex)
 
     def mixText(self,iobj,v):
         num=len(self.obj[iobj])
@@ -147,4 +188,24 @@ class asciiMovie:
                 vr=dr/dd*v+vrand; vc=dc/dd*v+vrand
                 self.obj[iobj][i][3]=vr; self.obj[iobj][i][4]=vc
 
+    def stripeRow(self,iobj,v,flag):
+        num=len(self.obj[iobj])
+        if(flag=='init'):
+            for i in range(0,num):
+                if(i%2==0):
+                    self.obj[iobj][i][2]=self.obj[iobj][i][2]-self.col
+                    self.obj[iobj][i][4]=v
+                else:
+                    self.obj[iobj][i][2]=self.obj[iobj][i][2]+self.col
+                    self.obj[iobj][i][4]=-1*v
+        if(flag=='end'):
+            for i in range(0,num):
+                nrC=self.obj[iobj][i][1]; ncC=self.obj[iobj][i][2]
+                nrE=self.objEnd[iobj][i][1]; ncE=self.objEnd[iobj][i][2]
+                dr=nrE-nrC; dc=ncE-ncC
+                dd=math.sqrt(dr*dr+dc*dc)
+                if(dd<=1):
+                    vr=0;vc=0; 
+                    self.obj[iobj][i][1]=nrE; self.obj[iobj][i][2]=ncE
+                    self.obj[iobj][i][3]=vr; self.obj[iobj][i][4]=vc
 
