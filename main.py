@@ -216,11 +216,12 @@ for step in range(0,100):
     a.showBuf()
     time.sleep(tS)
 
-for step in range(0,100):
+for step in range(0,80):
     a.clearBuf()
     a.scroll(2,-1,0,'end')
     a.runCommon(2)
-    a.addToBuf(1)
+    if(step%2==0):
+        a.addToBuf(1)
     a.addToBuf(2)
     a.addToBuf(0)
     a.showBuf()
@@ -245,11 +246,15 @@ a.loadFile('data/end.txt',0,100,1,1,'cur')#title
 a.move(1,40,0)
 a.addVec1(1,-1,0,0,0)
 
-tS=0.4
-for step in range(0,150):
+tS=0.3
+for step in range(0,130):
     a.clearBuf()
     a.runCommon(1)
     a.addToBuf(1)
     a.addToBuf(0)
     a.showBuf()
     time.sleep(tS)
+
+a.delAllObj()
+os.system('clear')
+sys.exit(0)
