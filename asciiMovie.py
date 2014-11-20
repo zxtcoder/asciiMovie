@@ -11,6 +11,10 @@ class asciiMovie:
             self.buf.append([])
             for j in range(0,col):
                 self.buf[-1].append(' ')
+
+    def delAllObj(self):
+        self.objBegin=[];self.objEnd=[];self.obj=[]
+        self.clearBuf()
         
     def addEmptyObj(self):
         self.objBegin.append([])
@@ -20,7 +24,10 @@ class asciiMovie:
     def loadFile(self,fname,beginL,endL,stepL,iobj,flag):
         fp=open(fname,'r')
         content=fp.readlines()
+        lnum=len(content)
         for i in range(beginL,endL,stepL):
+            if(i>=lnum):
+                break
             line=content[i].strip('\n')
             numtmp=len(line)
             for j in range(0,numtmp):
