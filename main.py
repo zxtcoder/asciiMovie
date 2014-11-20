@@ -50,11 +50,10 @@ a.loadFile('c.txt',0,40,1,1,'end')
 #    a.showBuf()
 #    time.sleep(0.1)
 
-a.move(1,0,150)
-a.scroll(1,0,-5,'init')
+a.bubble(1,-1,-5,'init')
 for i in range(0,200):
     a.clearBuf()
-    a.scroll(1,0,-5,'end')
+    a.bubble(1,-1,-5,'end')
     a.runCommon(1)
     a.addToBuf(1)
     a.addToBuf(0)

@@ -188,6 +188,25 @@ class asciiMovie:
                 vr=dr/dd*v+vrand; vc=dc/dd*v+vrand
                 self.obj[iobj][i][3]=vr; self.obj[iobj][i][4]=vc
 
+    def bubble(self,iobj,vr,vc,flag):
+        num=len(self.obj[iobj])
+        rowF=0; colF=0
+        if(flag=='init'):
+            self.addVec1(iobj,vr,vc,0,0)
+        if(flag=='end'):
+            for i in range(0,num):
+                if(self.obj[iobj][i][1]>=self.row or self.obj[iobj][i][1]<=0):
+                    rowF=1;
+                if(self.obj[iobj][i][2]>=self.col or self.obj[iobj][i][2]<=0):
+                    colF=1;
+            if(rowF==1 or colF==1):
+                for i in range(0,num):
+                    if(rowF==1):
+                        self.obj[iobj][i][3]*=-1
+                    if(colF==1):
+                        self.obj[iobj][i][4]*=-1
+        
+
     def stripeRow(self,iobj,v,flag):
         num=len(self.obj[iobj])
         if(flag=='init'):
