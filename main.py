@@ -2,7 +2,7 @@
 import  asciiMovie
 import os,sys,math,time,copy,random
 
-tS=0.01
+tS=0.1
 
 a=asciiMovie.asciiMovie(40,160)
 a.addEmptyObj()
@@ -25,7 +25,7 @@ for step in range(0,150):
     time.sleep(tS)
 
 a.addVec1(1,-2,0,0,0)
-for step in range(0,50):
+for step in range(0,30):
     a.clearBuf()
     a.runCommon(1)
     a.addToBuf(1)
@@ -115,7 +115,7 @@ for step in range(0,45):
     a.addToBuf(2)
     a.showBuf()
     time.sleep(tS)
-for step in range(0,100):
+for step in range(0,150):
     a.clearBuf()
     a.lineShow(3,2)
     a.addToBuf(0)
@@ -181,6 +181,49 @@ a=asciiMovie.asciiMovie(40,160)
 a.addEmptyObj()
 a.loadFile('data/0.txt',0,40,1,0,'cur')
 
-  
-#Frame 5: struggle together #####################################
+#Frame 5: Happy birthday  #####################################
+a.addEmptyObj()
+a.loadFile('data/0501.txt',0,40,1,1,'end')#title
+a.loadFile('data/0501.txt',0,40,1,1,'cur')#title
+a.stripeRow(1,2,'init')
+
+a.addEmptyObj()
+a.loadFile('data/0502.txt',0,40,1,2,'cur')#cake
+a.loadFile('data/0502.txt',0,40,1,2,'end')#cake
+a.move(2,20,0)
+a.scroll(2,-1,0,'init')
+
+for step in range(0,100):
+    a.clearBuf()
+    a.stripeRow(1,2,'end')
+    a.runCommon(1)
+    a.addToBuf(0)
+    a.addToBuf(1)
+    a.showBuf()
+    time.sleep(tS)
+
+for step in range(0,100):
+    a.clearBuf()
+    a.scroll(2,-1,0,'end')
+    a.runCommon(2)
+    a.addToBuf(0)
+    a.addToBuf(1)
+    a.addToBuf(2)
+    a.showBuf()
+    time.sleep(tS)
+
+for step in range(0,50):
+    a.clearBuf()
+    a.shadeHide(1,20); a.shadeHide(2,20)
+    a.addToBuf(0)
+    a.addToBuf(1)
+    a.addToBuf(2)
+    a.showBuf()
+    time.sleep(tS)
+
+a.delAllObj()
+a=asciiMovie.asciiMovie(40,160)
+a.addEmptyObj()
+a.loadFile('data/0.txt',0,40,1,0,'cur')
+
 
