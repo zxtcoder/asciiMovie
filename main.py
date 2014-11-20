@@ -141,6 +141,46 @@ a.addEmptyObj()
 a.loadFile('data/0.txt',0,40,1,0,'cur')
 
 #Frame 4:tucao love ################################
+a.addEmptyObj()
+a.loadFile('data/0401.txt',0,40,1,1,'begin')#title
 
+a.addEmptyObj()
+a.loadFile('data/0402.txt',0,40,1,2,'cur')#heart
+a.bubble(2,1,2,'init')
 
+for step in range(0,150):
+    a.clearBuf()
+    a.shadeShow(1,10)
+    a.runCommon(2)
+    a.bubble(2,1,1,'end')
+    a.addToBuf(0)
+    a.addToBuf(1)
+    a.addToBuf(2)
+    a.showBuf()
+    time.sleep(tS)
+for step in range(0,90):
+    a.clearBuf()
+    a.runCommon(2)
+    a.bubble(2,1,1,'end')
+    a.addToBuf(0)
+    a.addToBuf(1)
+    a.addToBuf(2)
+    a.showBuf()
+    time.sleep(tS)
+for step in range(0,50):
+    a.clearBuf()
+    a.shadeHide(1,20); a.shadeHide(2,20)
+    a.addToBuf(0)
+    a.addToBuf(1)
+    a.addToBuf(2)
+    a.showBuf()
+    time.sleep(tS)
+
+a.delAllObj()
+a=asciiMovie.asciiMovie(40,160)
+a.addEmptyObj()
+a.loadFile('data/0.txt',0,40,1,0,'cur')
+
+  
+#Frame 5: struggle together #####################################
 
